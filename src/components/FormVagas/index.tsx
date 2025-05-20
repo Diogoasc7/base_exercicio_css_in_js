@@ -1,27 +1,23 @@
-import { FormEvent, useState, ChangeEvent } from 'react'
-import { Form, Campo, Botao } from './style'
+import { FormEvent } from 'react'
 
-const FormVagas = () => {
-  const [termo, setTermo] = useState('')
+type Props = {
+  aoPesquisar: (termo: string) => void
+}
 
-  const aoEnviarForm = (e: FormEvent<HTMLFormElement>) => {
+const FormVagas = ({ aoPesquisar }: Props) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Pesquisa:', termo)
-  }
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTermo(e.target.value)
+    const termo = (
+      e.currentTarget.elements.namedItem('busca') as HTMLInputElement
+    ).value
+    aoPesquisar(termo)
   }
 
   return (
-    <Form onSubmit={aoEnviarForm}>
-      <Campo
-        placeholder="Front-end, fullstack, node, design"
-        onChange={handleChange}
-        type="search"
-      />
-      <Botao type="submit">Pesquisar</Botao>
-    </Form>
+    <form onSubmit={handleSubmit}>
+      <input type="text" name="busca" placeholder="Pesquisar vaga..." />
+      <button type="submit">Buscar</button>
+    </form>
   )
 }
 
